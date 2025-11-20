@@ -14,6 +14,11 @@ uv run src/train_toy2d.py
 # or to schedule with slurm
 uv run src/train_toy2d.py -m +slurm=cpu
 
+
+# Run light version for testing
+uv run src/train_toy2d.py +light=train_light_toy2d
+uv run src/train_toy2d.py -m +light=train_light_toy2d +slurm=cpu
+
 ```
 ####
 
