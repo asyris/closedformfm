@@ -82,7 +82,7 @@ def train(cfg):
     # TODO do better to avoid potential overwriting with multiple process
     with open(f'{run_id}_config_dict.pkl', 'wb') as f:
         pickle.dump(cfg, f)
-    mlflow.log_artifact(f'{run_id}_config_dict.pkl', artifact_path="config")
+    mlflow.log_artifact(f'{run_id}_config_dict.pkl', name="config")
 
     torch.manual_seed(0)  # TODO better seeding
 
@@ -280,10 +280,10 @@ def train(cfg):
                                 x0.cpu().numpy(),
                                 ema_model(t, x0).detach().cpu().numpy())
                             mlflow.pytorch.log_model(
-                                ema_model, artifact_path=f'model_ema_{global_step}',
+                                ema_model, name=f'model_ema_{global_step}',
                                 signature=signature)
                             mlflow.pytorch.log_model(
-                                net_model, artifact_path=f'model_{global_step}',
+                                net_model, name=f'model_{global_step}',
                                 signature=signature)
 
                     # sample and Saving the weights

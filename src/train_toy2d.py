@@ -158,7 +158,7 @@ def train(cfg):
                     x0.numpy(),
                     model(torch.cat([x0, t], dim=-1)).detach().numpy())
                 mlflow.pytorch.log_model(
-                    model, artifact_path=f'training-state-{current_epoch}',
+                    model, name=f'training-state-{current_epoch}',
                     signature=signature)
 
     mlflow.end_run()
