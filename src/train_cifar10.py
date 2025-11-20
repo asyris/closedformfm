@@ -32,8 +32,6 @@ def train(cfg):
     from tqdm import trange
     from utils_cifar10 import ema, infiniteloop, model_mul
     # generate_samples
-
-
     from torchcfm.conditional_flow_matching import (
         ConditionalFlowMatcher,
         ExactOptimalTransportConditionalFlowMatcher,
@@ -70,7 +68,7 @@ def train(cfg):
         cfg.sampler, "integration_method, integration_steps")
     n_subsample, random_horizontal_flip = getall(cfg.data, "n_subsample, random_horizontal_flip")
     print(n_subsample)
-    # import ipdb; ipdb.set_trace()
+
     mlflow.set_tag(
         "mlflow.runName",
         f"{model_name}, E ucond {expected_ucond}, ema {ema_decay}, ema_start {ema_start}, rescaled {rescaled}, bs {batch_size}, lr {lr},  #n_mean {n_samples_mean}")
@@ -130,7 +128,7 @@ def train(cfg):
             dataset,
             batch_size=n_samples_mean,
             sampler=sampler,
-            shuffle= True,
+            shuffle=True,
             num_workers=num_workers,
             drop_last=True,
         )

@@ -1,0 +1,15 @@
+# @package _global_
+defaults:
+  - override /hydra/launcher: submitit_slurm
+hydra:
+  launcher:
+    partition: "gpu_p2"
+    gres: "gpu:1"
+    nodes: 1
+    constraint: "[v100]"
+    account: "pof@v100"
+    name: ${hydra.job.name}
+    _target_: hydra_plugins.hydra_submitit_launcher.submitit_launcher.SlurmLauncher
+    cpus_per_task: 2
+    # time: "30:00"
+    timeout_min: 30
