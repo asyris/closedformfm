@@ -1,16 +1,10 @@
-import hydra
-# from conf.toy2d import Config
+
+from utils.core import *
+
 # delay most imports to have faster access to hydra config from the command line
 
-@hydra.main(
-        config_name="train_toy2d", version_base=None, config_path="../conf")
+@hydra_main("train_toy2d")
 def train(cfg):
-
-    print("RUNNING as", cfg.run_name)
-
-
-
-
 
     import time
     import tempfile
@@ -27,7 +21,7 @@ def train(cfg):
     from utils.otcfm import (
         compute_conditional_vector_field, sample_conditional_pt, sample_gaussian)
     from utils.mean_cfm import get_full_velocity_field
-    from utils.metrics import flatten, getall, get_gen_samples, get_w_dist
+    from utils.metrics import flatten, get_gen_samples, get_w_dist
 
     # Set our tracking server uri for logging
     #mlflow.set_tracking_uri(uri="http://127.0.0.1:8080")
@@ -162,11 +156,6 @@ def train(cfg):
                     signature=signature)
 
     mlflow.end_run()
-
-
-
-
-
 
 
 
