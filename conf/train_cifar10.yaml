@@ -32,7 +32,6 @@ sampler:
   integration_steps: 10
 
 data:
-  root: "/lustre/fsmisc/dataset"
-  # root: "$DSDIR"
+  root: "${oc.env:HOME}/datasets"
   n_subsample: 50000
   random_horizontal_flip: True
