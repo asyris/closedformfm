@@ -1,0 +1,6 @@
+# @package hydra
+job:
+  env_set:
+    MLFLOW_TRACKING_URI: "file://${oc.env:SCRATCH}/mlruns"
+sweep:
+  dir: ${oc.env:SCRATCH}/multirun/${now:%Y-%m-%d}/${now:%H-%M-%S}
