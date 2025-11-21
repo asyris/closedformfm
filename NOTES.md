@@ -8,7 +8,7 @@
 
 # trigger installation
 uv venv
-uv run src/train_toy2d.py
+uv run src/train_toy2d.py --help
 
 
 # activate the virtual environment, to used directly python without uv
@@ -28,12 +28,19 @@ python src/train_toy2d.py -m +light=train_light_toy2d +slurm=cpu
 # or for JZ
 python src/train_toy2d.py -m +light=train_light_toy2d +slurm=jzv100
 
+## ALL
+uv pip install -e .
+python src/train_toy2d.py   -m +light=train_light_toy2d   +slurm=gpu24
+python src/train_cifar10.py -m +light=train_light_cifar10 +slurm=gpu24
+
 
 
 # Remove the light=train_light_toy2d to run the full config
 uv pip install -e .
 python src/train_toy2d.py -m +slurm=cpu
 python src/train_toy2d.py -m +slurm=jzv100
+...
+
 ```
 ####
 
