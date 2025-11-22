@@ -52,7 +52,7 @@ def mlflow_start(cfg, project_name: str, no_runname=False, no_runid=False, no_pa
         with open_dict(cfg):
             cfg.run_id = run_id
     if not no_params:
-        mlflow.log_params(flatten(cfg, separator='__'))
+        mlflow.log_params(flatten(cfg, separator='.'))
     return run
 
 

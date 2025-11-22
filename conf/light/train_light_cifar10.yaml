@@ -1,6 +1,4 @@
 # @package _global_
-defaults:
-  - /train_toy2d
 
 trainer:
   total_steps: 101
@@ -13,3 +11,5 @@ trainer:
 data:
   n_subsample: 512
   random_horizontal_flip: True
+
+#run_name: 'light_cifar10${net.dim}d_bs${optimizer.batch_size}_lr${optimizer.lr}'

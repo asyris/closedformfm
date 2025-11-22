@@ -1,5 +1,6 @@
 defaults:
   - /base.yaml
+
 net:
   num_channels: 128
 
@@ -37,3 +38,5 @@ data:
   root: "${oc.env:HOME}/datasets"
   n_subsample: 50000
   random_horizontal_flip: True
+
+run_name: "${loss.model_name}_expected${loss.expected_ucond}_ema${optimizer.ema_decay}_ema_start${optimizer.ema_start}_rescaled${loss.rescaled}_bs${optimizer.batch_size}_lr${optimizer.lr}_n_mean${loss.n_samples_mean}"

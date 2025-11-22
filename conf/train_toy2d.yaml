@@ -1,3 +1,6 @@
+defaults:
+  - /base.yaml
+
 net:
   dim: 2
   n_layers: 2

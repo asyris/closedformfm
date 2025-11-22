@@ -2,9 +2,22 @@
 
 ### How to run
 
-####
+#### NB: About paths, hydra and mlflow
+
+The code will use mlflow to log experiments and hydra to manage configurations.
+There will be different relevant paths, by default all in the HOME folder:
+
+- mlflow database: `mlflow.db` (sqlite file with experiment tracking info)
+- mlflow artifacts: `mlflow-artifacts/` (folder with artifacts/models logged by mlflow)
+- hydra multirun folder: `multirun/` (folder with hydra multirun outputs, including slurm logs etc)
+- datasets cache folder: `datasets/` (folder where datasets are downloaded and cached)
+
+
+#### Run some experiments
 
 ```bash
+cd .....
+
 
 # trigger installation
 uv venv
@@ -39,13 +52,15 @@ python src/train_cifar10.py -m +light=train_light_cifar10 +slurm=gpu24
 uv pip install -e .
 python src/train_toy2d.py -m +slurm=cpu
 python src/train_toy2d.py -m +slurm=jzv100
-...
+#...
 
+# Some watching
+watch -n 3 bash -c '"squeue -u $USER; echo .. ; ls -ltr .. | tail -4 ; echo ./ ; ls -ltr ./ | tail -4"'
 ```
 
 
 
-#### MLflow server (with back tunneling)
+#### Look at MLflow server ui (with back tunneling)
 
 Connect and tunnel:
 
@@ -73,7 +88,9 @@ fg # for the password...
 mlflow server --backend-store-uri sqlite:///$HOME/mlflow.db --default-artifact-root $HOME/mlflow-artifacts --port 3999
 ```
 
+http://localhost:3839
 
+----
 
 #### OLD RANDOM
 

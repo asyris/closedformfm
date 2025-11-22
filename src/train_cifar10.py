@@ -4,10 +4,8 @@
 import time
 import copy
 import math
-import hydra
-import pickle
-from omegaconf import OmegaConf
 
+from utils.core import hydra_main, mlflow_start
 
 total_num_gpus = 1
 
@@ -19,8 +17,9 @@ compute_fid50k_every = 100_000
 batch_size_fid = 124
 
 
-@hydra.main(
-    version_base=None, config_path="../conf", config_name="train_cifar10")
+# delay most imports to have faster access to hydra config from the command line
+
+@hydra_main("train_cifar10")
 def train(cfg):
     def warmup_lr(step):
         return min(step, warmup) / warmup
@@ -39,7 +38,7 @@ def train(cfg):
         pad_t_like_x
     )
     from torchcfm.models.unet.unet import UNetModelWrapper
-    from utils.metrics import flatten, getall
+    from utils.metrics import getall
     from utils.mean_cfm import get_full_velocity_field
 
     from torchvision.datasets.cifar import CIFAR10
@@ -49,10 +48,9 @@ def train(cfg):
     import mlflow
     from mlflow.models import infer_signature
     print("Training about to start")
-    mlflow.set_experiment("cifar10")
-    mlflow.start_run()
-    run = mlflow.active_run()
-    run_id = run.info.run_id
+
+    mlflow_start(cfg, "cifar10")
+    
     print("Training started")
     use_cuda = torch.cuda.is_available()
     device = torch.device("cuda" if use_cuda else "cpu")
@@ -71,21 +69,6 @@ def train(cfg):
     root, n_subsample, random_horizontal_flip = getall(
         cfg.data, "root, n_subsample, random_horizontal_flip")
     print(n_subsample)
-
-    mlflow.set_tag(
-        "mlflow.runName",
-        f"{model_name}, E ucond {expected_ucond}, ema {ema_decay}, ema_start {ema_start}, rescaled {rescaled}, bs {batch_size}, lr {lr},  #n_mean {n_samples_mean}")
-    print(
-        f"lr {lr}, total_steps {total_steps}, ema decay {ema_decay}, dump_every {dump_every}, expected ucond {expected_ucond}, #samples_mean {n_samples_mean}")
-    # import ipdb; ipdb.set_trace()
-    OmegaConf.set_struct(cfg, False)
-    cfg["run_id"] = run_id
-    OmegaConf.set_struct(cfg, True)
-    mlflow.log_params(flatten(cfg, separator='__'))
-    # TODO do better to avoid potential overwriting with multiple process
-    # with open(f'{run_id}_config_dict.pkl', 'wb') as f:
-    #     pickle.dump(cfg, f)
-    # mlflow.log_artifact(f'{run_id}_config_dict.pkl', name="config")
 
     torch.manual_seed(0)  # TODO better seeding
 
