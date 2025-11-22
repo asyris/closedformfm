@@ -11,6 +11,7 @@ There will be different relevant paths, by default all in the HOME folder:
 - mlflow artifacts: `mlflow-artifacts/` (folder with artifacts/models logged by mlflow)
 - hydra multirun folder: `multirun/` (folder with hydra multirun outputs, including slurm logs etc)
 - datasets cache folder: `datasets/` (folder where datasets are downloaded and cached)
+- hydra non-multi run folder: `outputs/` (folder for hydra without `-m`, not used much here)
 
 
 #### Run some experiments
@@ -30,8 +31,11 @@ source .venv/bin/activate
 eval "$(python src/train_toy2d.py -sc install=bash)"
 
 
-
-python src/train_toy2d.py +light=train_light_toy2d
+# Run locally or on a compute node after manual login
+#python src/train_toy2d.py +light=train_light_toy2d
+# or as multirun to avoid having both outputs/ and multirun/
+python src/train_toy2d.py -m +light=train_light_toy2d
+m
 
 # or to schedule with slurm (from the frontend node)
 # - need "-m" for multirun, which is needed for the slurm launcher, even for a single run

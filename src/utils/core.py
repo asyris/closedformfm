@@ -28,18 +28,13 @@ def mlflow_start(cfg, project_name: str, no_runname=False, no_runid=False, no_pa
     import os
     k = "FORCE_MLFLOW_ARTIFACTS_DESTINATION"
     artifact_location = os.getenv(k, None)
-    print(f"## MLFlow experiment: {project_name}")
-    print(f"## MLFlow artifact location env var {k}: {artifact_location}")
     if not no_force_location and artifact_location is not None:
         existing_experiment = mlflow.get_experiment_by_name(project_name)
-        print(f"## Existing experiment: {existing_experiment}")
-        print(f"## Existing artifact location: {existing_experiment.artifact_location if existing_experiment is not None else 'N/A'}")
         need_change = existing_experiment is None or existing_experiment.artifact_location != artifact_location
         if existing_experiment is not None and need_change:
-            print(f"## MLFlow disallows changing artifact location of already existing experiment. Experiment ({project_name} already exists, not creating a new one).")
+            print(f"## ERROR: MLFlow disallows changing artifact location of already existing experiment. Experiment ({project_name} already exists, not creating a new one).")
             exit()
         if need_change:
-            print(f"## Using forced MLflow artifact location from env var {k}: {artifact_location}")
             mlflow.create_experiment(project_name, artifact_location=artifact_location)
 
     mlflow.set_experiment(project_name)

@@ -1,5 +1,6 @@
 defaults:
   - /base.yaml
+  - _self_
 
 net:
   num_channels: 128
