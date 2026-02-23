@@ -1,6 +1,8 @@
 
 from utils.core import hydra_main, mlflow_start
 
+import matplotlib.pyplot as plt
+
 # delay most imports to have faster access to hydra config from the command line
 
 @hydra_main("train_toy2d")
@@ -128,6 +130,15 @@ def train(cfg):
                 mlflow.log_metric("W test", w_dist_test, step=current_epoch)
                 print(f"W train: {w_dist_train:0.3f}")
                 print(f"W test: {w_dist_test:0.3f}")
+
+                # Plot of training vs generated points
+                fig = plt.figure(figsize=(5, 5))
+                plt.scatter(x1_train[:, 0].cpu(), x1_train[:, 1].cpu(), s=6, alpha=0.3, label="Train")
+                plt.scatter(gen_samples[:, 0], gen_samples[:, 1], s=6, alpha=0.3, label="Generated")
+                plt.legend()
+                mlflow.log_figure(fig, f"train_vs_gen_{current_epoch}.pdf")
+                plt.close(fig)
+                
 
                 filename = f"samples-{current_epoch:06d}.npz"
                 if dump_points:

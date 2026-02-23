@@ -103,6 +103,7 @@ import ot
 # import numpy as np
 
 def w_pairing(x0, x1):
+    """(x0, x1) closest pairing based on OT"""
     assert x0.shape[0] != x0.shape[1]
     n_gen_samples = x0.shape[0]
     ab = torch.ones(n_gen_samples) / n_gen_samples

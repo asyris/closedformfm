@@ -187,7 +187,7 @@ def train(cfg):
                     t = (tmax - tmin) * t + tmin
                     t_ = pad_t_like_x(t, x0)
                     xt = (1 - t_) * x0 + t_ * x1
-                    if expected_ucond and model_name == "icfm":
+                    if expected_ucond and model_name == "icfm": # efm
                         # TODO larger batchsize for x1_prime
                         x1prime = next(datalooper_prime).to(device)
                         x1prime = torch.cat([x1, x1prime])
